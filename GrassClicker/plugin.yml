@@ -1,0 +1,6 @@
+name: GrassClicker
+version: 1.0
+main: me.petulikan1.grassclicker.GrassClicker
+api-version: 1.13
+author: petulikan1
+depend: [TheAPI]

@@ -77,11 +77,8 @@ public class GCC implements CommandExecutor, Listener {
     private static HashMap<String, Integer>tasks = new HashMap<>();
     
     private static Config c = GrassClicker.config;
-
     public GCC() {
     }
-
-    @Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
             TheAPI.sendMsg("&4&lTento příkaz nelze použít z konzole!", sender);

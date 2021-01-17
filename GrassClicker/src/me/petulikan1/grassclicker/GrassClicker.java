@@ -11,10 +11,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.common.collect.Maps;
 
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.ConfigAPI.Config;
-import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.SortedMap.RankingAPI;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.configapi.Config;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.sortedmap.RankingAPI;
 import me.petulikan1.grassclicker.Command.GCC;
 
 public final class GrassClicker extends JavaPlugin implements Listener {
@@ -54,18 +54,18 @@ public final class GrassClicker extends JavaPlugin implements Listener {
     	translations.addDefault("Clicker.Items.Stats.Name", "&bStats");
     	translations.addDefault("Clicker.Items.Exit.Name", "&4Exit");
     	translations.addDefault("Clicker.Items.Back.Name", "&cBack");
-    	translations.addDefault("Clicker.Items.CloseMessage", "&6&lS&f&lerver &8&l»&f&l Minigame was closed.");
+    	translations.addDefault("Clicker.Items.CloseMessage", "&6&lS&f&lerver &8&lï¿½&f&l Minigame was closed.");
     	translations.addDefault("Clicker.Items.Rebirth.Name", "&bRebirths");
-    	translations.addDefault("Clicker.ConsoleSender", "&6&lS&f&lerver &8&l»&f&l This command can\'t be run from console!");
+    	translations.addDefault("Clicker.ConsoleSender", "&6&lS&f&lerver &8&lï¿½&f&l This command can\'t be run from console!");
     	translations.addDefault("Clicker.Menu.Main.Name", "&aGrass Clicker");
     	translations.addDefault("Clicker.Menu.Main.ClickBlock.Lore", "&7Points: %points%");
     	translations.addDefault("Clicker.Menu.Main.ClickBlock.Name", "&eClick");    	
     	translations.addDefault("Clicker.Menu.Main.Cooldown.ItemName", "&eWait a little");
     	translations.addDefault("Clicker.ActionBar.Cooldown", "&aYou can click again!");
     	translations.addDefault("Clicker.Menu.Main.VIP.Name", "&bVIP");
-    	translations.addDefault("Clicker.Menu.Main.VIP.Not", "&7&l» &4&lVIP NOT BOUGHT");
-    	translations.addDefault("Clicker.Menu.Main.VIP.Has", "&7&l» &a&lVIP BOUGHT");
-    	translations.addDefault("Clicker.Menu.Main.VIP.Bonus", "&7&l» &6&lB&f&lonus: %bonus%");
+    	translations.addDefault("Clicker.Menu.Main.VIP.Not", "&7&lï¿½ &4&lVIP NOT BOUGHT");
+    	translations.addDefault("Clicker.Menu.Main.VIP.Has", "&7&lï¿½ &a&lVIP BOUGHT");
+    	translations.addDefault("Clicker.Menu.Main.VIP.Bonus", "&7&lï¿½ &6&lB&f&lonus: %bonus%");
     	translations.addDefault("Clicker.Upgrades.NotEnoughPoints", "&cNot enough points!");
     	translations.addDefault("Clicker.Upgrades.BetterBlocks.Name", "&eHigher Block Chance");
     	translations.addDefault("Clicker.Upgrades.BetterBlocks.Lore", Arrays.asList("Level: %level%", "Price: %cost%"));

@@ -16,17 +16,17 @@ import org.bukkit.event.inventory.ClickType;
 
 import com.google.common.collect.Maps;
 
-import me.DevTec.TheAPI.TheAPI;
-import me.DevTec.TheAPI.APIs.ItemCreatorAPI;
-import me.DevTec.TheAPI.ConfigAPI.Config;
-import me.DevTec.TheAPI.CooldownAPI.CooldownAPI;
-import me.DevTec.TheAPI.GUIAPI.GUI;
-import me.DevTec.TheAPI.GUIAPI.ItemGUI;
-import me.DevTec.TheAPI.Scheduler.Tasker;
-import me.DevTec.TheAPI.Utils.HoverMessage.ClickAction;
-import me.DevTec.TheAPI.Utils.HoverMessage.HoverAction;
-import me.DevTec.TheAPI.Utils.PercentageList;
-import me.DevTec.TheAPI.Utils.StringUtils;
+import me.devtec.theapi.TheAPI;
+import me.devtec.theapi.apis.ItemCreatorAPI;
+import me.devtec.theapi.configapi.Config;
+import me.devtec.theapi.cooldownapi.CooldownAPI;
+import me.devtec.theapi.guiapi.GUI;
+import me.devtec.theapi.guiapi.ItemGUI;
+import me.devtec.theapi.scheduler.Tasker;
+import me.devtec.theapi.utils.HoverMessage.ClickAction;
+import me.devtec.theapi.utils.HoverMessage.HoverAction;
+import me.devtec.theapi.utils.PercentageList;
+import me.devtec.theapi.utils.StringUtils;
 import me.petulikan1.grassclicker.Blocks;
 import me.petulikan1.grassclicker.GrassClicker;
 

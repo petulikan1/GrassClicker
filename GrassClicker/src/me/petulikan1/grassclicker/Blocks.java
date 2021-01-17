@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.Material;
 
 public enum Blocks {
-	//PO�ET POINT�//LEVEL//�ANCE
     GRASS_BLOCK(1, 0, 20),
     PODZOL(2, 0, 10),
     DIRT(2, 1, 20),

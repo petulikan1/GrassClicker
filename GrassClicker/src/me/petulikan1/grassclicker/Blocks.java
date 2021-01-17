@@ -5,7 +5,7 @@ import java.util.List;
 import org.bukkit.Material;
 
 public enum Blocks {
-	//POÈET POINTÙ//LEVEL//ŠANCE
+	//POï¿½ET POINTï¿½//LEVEL//ï¿½ANCE
     GRASS_BLOCK(1, 0, 20),
     PODZOL(2, 0, 10),
     DIRT(2, 1, 20),
@@ -83,7 +83,7 @@ public enum Blocks {
     public int getMaxLevel() {
         return this.i2 + 3;
     }
-
+    
     public Material toMaterial() {
         return Material.matchMaterial(this.name());
     }
@@ -92,14 +92,12 @@ public enum Blocks {
         List<Blocks> blocks = Lists.newArrayList();
         Blocks[] var2 = values();
         int var3 = var2.length;
-
         for(int var4 = 0; var4 < var3; ++var4) {
             Blocks b = var2[var4];
             if (b.getRequiredLevel() <= current && (b.getMaxLevel() == -1 || b.getMaxLevel() >= current)) {
                 blocks.add(b);
             }
         }
-
         return blocks;
     }
 

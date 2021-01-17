@@ -59,21 +59,21 @@ public class GCC implements CommandExecutor, Listener {
     					openRebirth(player);
     				}
     			},
-    					credits=new ItemGUI(ItemCreatorAPI.createHead(1, "&2&lpetulikan1", "petulikan1", Arrays.asList("&7&l» &6&lM&f&linigame &6&lC&f&lreator ", "&7&l» &a&lContact: &e@petulikan1 &7(&6Instagram&7)"))) {
+    					credits=new ItemGUI(ItemCreatorAPI.createHead(1, "&2&lpetulikan1", "petulikan1", Arrays.asList(TheAPI.colorize("&7&l» &6&lM&f&linigame &6&lC&f&lreator "), TheAPI.colorize("&7&l» &a&lContact: &e@petulikan1 &7(&6Instagram&7)")))) {
     							@Override
 								public void onClick(Player s, GUI arg1, ClickType arg2) {
     								TheAPI.msg("&7»===============«",s);
-    								StringUtils.getHoverMessage("&6C&freated by &6&npetulikan1")
-    								.setHoverEvent(HoverAction.SHOW_TEXT, "&6&lC&f&llick for visit")
+    								StringUtils.getHoverMessage(TheAPI.colorize("&6C&freated by &6&npetulikan1"))
+    								.setHoverEvent(HoverAction.SHOW_TEXT, TheAPI.colorize("&6&lC&f&llick for visit"))
     								.setClickEvent(ClickAction.OPEN_URL, "https://www.instagram.com/petulikan1/").send(s);
     								TheAPI.msg(" &7Links:",s);
     								TheAPI.msg("&7", s);
-    								StringUtils.getHoverMessage(" &a » &6&nG&f&nrass&n&6&nC&f&nlicker")
-    								.setHoverEvent(HoverAction.SHOW_TEXT, "&6&lC&f&llick for &a&ldownload")
+    								StringUtils.getHoverMessage(TheAPI.colorize(" &a » &6&nG&f&nrass&n&6&nC&f&nlicker &a«"))
+    								.setHoverEvent(HoverAction.SHOW_TEXT, TheAPI.colorize("&6&lC&f&llick for &a&ldownload"))
     								.setClickEvent(ClickAction.OPEN_URL, "https://www.spigotmc.org/resources/grassclicker.84667/").send(s);
     								TheAPI.msg("&7", s);
-    								StringUtils.getHoverMessage("&b&lP&fowered by &b&nTheAPI")
-    								.setHoverEvent(HoverAction.SHOW_TEXT, "&6&lC&f&llick for &a&ldownload")
+    								StringUtils.getHoverMessage(TheAPI.colorize("&b&lP&fowered by &b&nTheAPI"))
+    								.setHoverEvent(HoverAction.SHOW_TEXT, TheAPI.colorize("&6&lC&f&llick for &a&ldownload"))
     								.setClickEvent(ClickAction.OPEN_URL, "https://www.spigotmc.org/resources/theapi.72679/").send(s);
     								TheAPI.msg("&7»===============«",s);
     							}
@@ -111,8 +111,7 @@ public class GCC implements CommandExecutor, Listener {
     private static HashMap<String, Double> cost1;
     private static HashMap<String, Integer>tasks = new HashMap<>();
     
-    public GCC() {
-    }
+    
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
             TheAPI.sendMsg(t.getString("Clicker.ConsoleSender"), sender);
@@ -120,22 +119,22 @@ public class GCC implements CommandExecutor, Listener {
         } else if (!sender.hasPermission(c.getString("Command.Permission"))) {
             return true;
         } else {
-            openMenu(((Player)sender).getPlayer());   
-            //guis.clear();
-            itemsPerPlayer.clear();
-            if (sender.hasPermission(c.getString("Options.VIP2.Permission"))) {
-            	TheAPI.getUser(sender.getName()).setAndSave("clicker.vip", c.getInt("Options.VIP2.Value"));
-            } else if (sender.hasPermission(c.getString("Options.VIP1.Permission"))) {
-            	TheAPI.getUser(sender.getName()).setAndSave("clicker.vip", c.getInt("Options.VIP1.Value"));
-            } else {
-            	TheAPI.getUser(sender.getName()).setAndSave("clicker.vip", c.getInt("Options.Bonus.Default"));
-            }
-            
+            openMenu(((Player)sender).getPlayer());            
             return true;
         }
     }
 
-    public void updateGlasses(Player p) {
+	public void openMenu(Player p) {
+		PercentageList<Blocks> block = new PercentageList<>();
+        for(Blocks b : Blocks.getByLevel(TheAPI.getUser(p).getInt("clicker.blocksLevel")))
+            block.add(b, b.getChance());
+        randomBlocks.put(p.getName(), block);
+        GUI g = updateGlasses(p);
+        g.open(p);
+       
+}
+	
+	public GUI updateGlasses(Player p) {
         GUI g = guis.getOrDefault(p.getName(),null);
         if (g == null) {
             g = new GUI(t.getString("Clicker.Menu.Main.Name").toString(), 54) {
@@ -144,15 +143,13 @@ public class GCC implements CommandExecutor, Listener {
             		TheAPI.getUser(p).setAndSave("clicker.playtime", TheAPI.getUser(p).getLong("clicker.playtime")+(System.currentTimeMillis()/1000)-aw.getOrDefault(p.getName(),0L));
             		aw.remove(p.getName());
             	}
-            };
-            
+            };            
             PercentageList<Blocks> block = randomBlocks.get(p.getName());
         	Material mat = (g.getItem(30) != null) ? g.getItem(30).getType() : block.getRandom().toMaterial();  
         	itemsPerPlayer.put(p.getName(), new ItemGUI(ItemCreatorAPI.create(mat, 1, t.getString("Clicker.Menu.Main.ClickBlock.Name"), Arrays.asList(t.getString("Clicker.Menu.Main.ClickBlock.Lore").replace("%points%", ((int)TheAPI.getUser(p).getFloat("clicker.points"))+"")))) {
                 @Override
 				public void onClick( Player player, GUI gui, ClickType clickType) {
                 	PercentageList<Blocks> block = randomBlocks.get(p.getName());
-                    
                 	if (c.getBoolean("Options.AntiAutoClicker.Enabled")) {
                         if (clickcount.getOrDefault(player.getName(),0) >= (TheAPI.getUser(player).getInt("clicker.clicklimiter")<=0?1:TheAPI.getUser(p).getInt("clicker.clicklimiter")) * (c.getInt("Options.AntiAutoClicker.Multiplier"))) {
                         	CooldownAPI cooldown = new CooldownAPI(p.getUniqueId());
@@ -164,7 +161,6 @@ public class GCC implements CommandExecutor, Listener {
 							player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 5, 1);
                     		if(!tasks.containsKey(player.getName()))
                 			tasks.put(player.getName(), new Tasker() {
-    							@Override
 								public void run() {
     								if(cooldown.expired("clicker")) {
     									cancel();
@@ -200,6 +196,11 @@ public class GCC implements CommandExecutor, Listener {
                     GCC.clickcount.put(p.getName(), GCC.clickcount.getOrDefault(player.getName(),0) +c.getInt("Options.Upgrades.AntiAutoClicker.PerClickAdd"));
                 }
             });
+        	 g.setItem(35, new ItemGUI(ItemCreatorAPI.create(Material.EMERALD, 1, t.getString("Clicker.Menu.Main.VIP.Name")
+             		, Arrays.asList((TheAPI.getUser(p).getInt("clicker.vip")<=0?t.getString("Clicker.Menu.Main.VIP.Not")
+             				:t.getString("Clicker.Menu.Main.VIP.Has")),t.getString("Clicker.Menu.Main.VIP.Bonus")
+             				.replace("%bonus%", TheAPI.getUser(p).getInt("clicker.vip")+"")))) {
+     			public void onClick(Player player, GUI arg1, ClickType arg2) {}});
             for(int i : new int[] {21,22,23,30,31,32})
                 g.setItem(i, itemsPerPlayer.get(p.getName()));
             g.setItem(18, openUpgrade);
@@ -208,6 +209,7 @@ public class GCC implements CommandExecutor, Listener {
             g.setItem(26, rebirth);
             g.setItem(4, credits);
             guis.put(p.getName(), g);
+            
         }
         
         aw.put(p.getName(),System.currentTimeMillis()/1000);
@@ -222,31 +224,13 @@ public class GCC implements CommandExecutor, Listener {
             	if(i!=49)
                 g.setItem(i, glass);
             }
+            return g;
     }
         
     private static HashMap<String, PercentageList<Blocks>> randomBlocks = new HashMap<>();
     private static HashMap<String, ItemGUI> itemsPerPlayer = new HashMap<>();
     
-    public void openMenu(Player p) {
-    		PercentageList<Blocks> block = new PercentageList<>();
-            for(Blocks b : Blocks.getByLevel(TheAPI.getUser(p).getInt("clicker.blocksLevel")))
-                block.add(b, b.getChance());
-            randomBlocks.put(p.getName(), block);
-
-        	updateGlasses(p); 
-            
-            GUI g = guis.get(p.getName());
-            g.open(new Player[]{p});
-            g.setItem(35, new ItemGUI(ItemCreatorAPI.create(Material.EMERALD, 1, t.getString("Clicker.Menu.Main.VIP.Name")
-            		, Arrays.asList((TheAPI.getUser(p).getInt("clicker.vip")<=0?t.getString("Clicker.Menu.Main.VIP.Not")
-            				:t.getString("Clicker.Menu.Main.VIP.Has")),t.getString("Clicker.Menu.Main.VIP.Bonus")
-            				.replace("%bonus%", TheAPI.getUser(p).getInt("clicker.vip")+"")))) {
-    			@Override
-    			public void onClick(Player player, GUI arg1, ClickType arg2) {
-    			}
-    		});      	        
-       
-    }
+    
     
         
     public void openUpgrades(Player p) {
@@ -282,14 +266,12 @@ public class GCC implements CommandExecutor, Listener {
                 
                 if (TheAPI.getUser(p).getInt("clicker.blocksLevel")<19) {
                 	if ((int)TheAPI.getUser(p).getFloat("clicker.points")>=cost.get(p.getName())) {
-                    	TheAPI.bcMsg("1");
                 		g.setItem(20, new ItemGUI(ItemCreatorAPI.create(Material.GRASS_BLOCK, 1, t.getString("Clicker.Upgrades.BetterBlocks.Name"),lore1)) {
 							public void onClick(Player player, GUI gui, ClickType clickType) {
 								if ((int)TheAPI.getUser(p).getFloat("clicker.points")>=cost.get(p.getName())) {
 									
 								TheAPI.getUser(p).setAndSave("clicker.blocksLevel", (TheAPI.getUser(p).getInt("clicker.blocksLevel")<=0?1:TheAPI.getUser(p).getInt("clicker.blocksLevel")+1));
 								TheAPI.getUser(p).setAndSave("clicker.points", (int)TheAPI.getUser(p).getFloat("clicker.points")-cost.get(p.getName()));
-								updateGlasses(p);
 								
 								cost.put(p.getName(), (double)(c.getInt("Options.Upgrades.BetterBlocks.Cost") * (TheAPI.getUser(p).getInt("clicker.blocksLevel") <= 0 ? 1 : TheAPI.getUser(p).getInt("clicker.blocksLevel")+1)));
 								
@@ -305,6 +287,7 @@ public class GCC implements CommandExecutor, Listener {
 								} else {
 									this.setItem(ItemCreatorAPI.create(Material.BARRIER, 1, t.getString("Clicker.Upgrades.NotEnoughPoints")));
 									gui.setItem(20, this);
+									player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 5, 1);
 									ArrayList<String> lore2 = new ArrayList<>();
 					                for (String s : t.getStringList("Clicker.Upgrades.AntiAutoClicker.Item.Lore")) {
 					                	lore2.add(s.replace("%level%", TheAPI.getUser(p).getInt("clicker.blocksLevel")+"").replace("%cost%", cost.get(p.getName())+""));
@@ -326,7 +309,7 @@ public class GCC implements CommandExecutor, Listener {
 			    	                			tasks.remove(player.getName());
 			    								}
 			                             }
-			    						}.runRepeating(0, 0L));
+			    						}.runRepeating(0, 15));
 			                			return;	
 									}
 									gg.setItem(ItemCreatorAPI.create(Material.GRASS_BLOCK, 1, t.getString("Clicker.Upgrades.BetterBlocks.Name"), lore1));								
@@ -339,25 +322,22 @@ public class GCC implements CommandExecutor, Listener {
 								gui.setItem(20, this);
 								player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 5, 1);
 								CooldownAPI cooldown = new CooldownAPI(p.getUniqueId());
-	                        	cooldown.createCooldown("clicker", 1);
+	                        	cooldown.createCooldown("betterblocks", 2);
 	                        	ItemGUI gg = this;
 								if(!tasks.containsKey(player.getName())) {
-									TheAPI.bcMsg("task create");
 		                			tasks.put(player.getName(), new Tasker() {
-		    							@Override
 										public void run() {
-		    								if(cooldown.expired("clicker")) {
+		    								if(cooldown.expired("betterblocks")) {
 		    									cancel();
-		    		                    	cooldown.removeCooldown("clicker");
+		    		                    	cooldown.removeCooldown("betterblocks");
 		    		                    	gg.setItem(ItemCreatorAPI.create(Material.GRASS_BLOCK, 1, t.getString("Clicker.Upgrades.BetterBlocks.Name"), lore1));
 		    		                    	gui.setItem(20, gg);
 		    								if(player.isOnline())
 		    								clickcount.put(player.getName(), 0);
 		    	                			tasks.remove(player.getName());
-		    	                			TheAPI.bcMsg("task removed");
 		    								}
 		                             }
-		    						}.runRepeating(0, 0));		 
+		    						}.runRepeating(0, 15));	 
 		                			gg.setItem(ItemCreatorAPI.create(Material.GRASS_BLOCK, 1, t.getString("Clicker.Upgrades.BetterBlocks.Name"), lore1));
 		                			return;	
 								}	
@@ -420,6 +400,15 @@ public class GCC implements CommandExecutor, Listener {
                         if (TheAPI.getUser(p).getFloat("clicker.points") >= GCC.cost1.get(p.getName())) {
                             TheAPI.getUser(p).set("clicker.clicklimiter", (TheAPI.getUser(p).getInt("clicker.clicklimiter") <= 0 ? 1 : TheAPI.getUser(p).getInt("clicker.clicklimiter")) + 1);
                             TheAPI.getUser(p).setAndSave("clicker.points", TheAPI.getUser(p).getFloat("clicker.points") - GCC.cost1.get(p.getName()));
+                            Blocks clicked = Blocks.valueOf(gui.getItem(30).getType().name());
+                            TheAPI.getUser(player).set("clicker.clicks", TheAPI.getUser(player).getInt("clicker.clicks") +1);
+                            TheAPI.getUser(player).setAndSave("clicker.points", TheAPI.getUser(player).getFloat("clicker.points") + (clicked.getClicks()>=0?clicked.getClicks():0 + ((clicked.getClicks()>=0?clicked.getClicks():0)*TheAPI.getUser(p).getInt("clicker.rebirths")*0.5))+TheAPI.getUser(p).getInt("clicker.vip"));
+                            GUI g = guis.get(player.getName());
+                            ItemGUI gg = g.getItemGUI(30);
+                            gg.setItem(ItemCreatorAPI.create(clicked.toMaterial(), 1, t.getString("Clicker.Menu.Main.ClickBlock.Name"),Arrays.asList(t.getString("Clicker.Menu.Main.ClickBlock.Lore").replace("%points%", ((int)TheAPI.getUser(p).getFloat("clicker.points"))+""))));
+                            for(int i : new int[] {21,22,23,30,31,32}) {                        
+                                g.setItem(i, gg);
+                            }
                             TheAPI.msg("&eVyšší limit kliků zakoupen.", player);
                             GCC.cost1.put(p.getName(), (double)(c.getInt("Options.Upgrades.AntiAutoClicker.Cost") * (TheAPI.getUser(p).getInt("clicker.clicklimiter") <= 0 ? 1 : TheAPI.getUser(p).getInt("clicker.clicklimiter"))));
                             this.setItem(ItemCreatorAPI.create(Material.PAPER, 1, "&eVyšší limit kliků.", lore));
@@ -494,14 +483,10 @@ public class GCC implements CommandExecutor, Listener {
                 	ix = 0;
                     for(Entry<String, Integer> entry : GrassClicker.points.entrySet()) {
                         if (++ix == 37)break;
-                        
                         String other = TheAPI.colorize("&f&l"+  entry.getKey().substring(1));
                         String first = TheAPI.colorize("&6&l" +  entry.getKey().substring(0,1));
                         String playername = first+other;
                         String playtime = StringUtils.timeToString(TheAPI.getUser(entry.getKey()).getLong("clicker.playtime"));
-                        
-                        
-                        
                         g.setItem(8 + ix, new ItemGUI(ItemCreatorAPI.createHead(1, "&e" + +ix + "&f. &fPozice", entry.getKey(), Arrays.asList("&e» &fJméno: " +playername, " ", "&e» &fPočet kliků: &e" + TheAPI.getUser(entry.getKey()).getInt("clicker.clicks"), "&c» &fPočet bodů: &e" + (int)TheAPI.getUser(entry.getKey()).getFloat("clicker.points"), "&e» &fRebirthů: &e" + (TheAPI.getUser(entry.getKey()).getInt("clicker.rebirths")), "&e» &fOdehraný čas: &e" + playtime))) {
                             @Override
 							public void onClick(Player player, GUI gui, ClickType clickType) {
@@ -520,14 +505,10 @@ public class GCC implements CommandExecutor, Listener {
                 	ix = 0;
                     for(Entry<String, Integer> entry : GrassClicker.rebirths.entrySet()) {
                         if (++ix == 37)break;
-                        
                         String other = TheAPI.colorize("&f&l"+  entry.getKey().substring(1));
                         String first = TheAPI.colorize("&6&l" +  entry.getKey().substring(0,1));
                         String playername = first+other;
                         String playtime = StringUtils.timeToString(TheAPI.getUser(entry.getKey()).getLong("clicker.playtime"));
-                        
-                        
-                        
                         g.setItem(8 + ix, new ItemGUI(ItemCreatorAPI.createHead(1, "&e" + +ix + "&f. &fPozice", entry.getKey(), Arrays.asList("&e» &fJméno: " +playername,  " ", "&e» &fPočet kliků: &e" + TheAPI.getUser(entry.getKey()).getInt("clicker.clicks"), "&e» &fPočet bodů: &e" + (int)TheAPI.getUser(entry.getKey()).getFloat("clicker.points"), "&c» &fRebirthů: &e" + (TheAPI.getUser(entry.getKey()).getInt("clicker.rebirths")), "&e» &fOdehraný čas: &e" + playtime))) {
                             @Override
 							public void onClick(Player player, GUI gui, ClickType clickType) {
@@ -546,12 +527,10 @@ public class GCC implements CommandExecutor, Listener {
                 	ix = 0;
                     for(Entry<String, Integer> entry : GrassClicker.playtime.entrySet()) {
                         if (++ix == 37)break;
-                        
                         String other = TheAPI.colorize("&f&l"+  entry.getKey().substring(1));
                         String first = TheAPI.colorize("&6&l" +  entry.getKey().substring(0,1));
                         String playername = first+other;
                         String playtime = StringUtils.timeToString(TheAPI.getUser(entry.getKey()).getLong("clicker.playtime"));
-                      
                         g.setItem(8 + ix, new ItemGUI(ItemCreatorAPI.createHead(1, "&e" + +ix + "&f. &fPozice", entry.getKey(), Arrays.asList("&e» &fJméno: " +playername,  " ", "&e» &fPočet kliků: &e" + TheAPI.getUser(entry.getKey()).getInt("clicker.clicks"), "&e» &fPočet bodů: &e" + (int)TheAPI.getUser(entry.getKey()).getFloat("clicker.points"), "&e» &fRebirthů: &e" + (TheAPI.getUser(entry.getKey()).getInt("clicker.rebirths")), "&c» &fOdehraný čas: &e" + playtime))) {
                             @Override
 							public void onClick(Player player, GUI gui, ClickType clickType) {
